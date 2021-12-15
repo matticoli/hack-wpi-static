@@ -24,7 +24,7 @@ jobs:
           git config --global user.email 'matticoli@users.noreply.github.com'
           git commit -am "Added MLH Banner"
           countbadge=$(cat index.html | grep -o mlh-trust-badge | wc -l)
-          if [ $countbadge -lt 2 ]
+          if [ $countbadge -lt 3 ]
           then
             echo "Banner was not present, pushing change"
             git push
