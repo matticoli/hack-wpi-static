@@ -11,6 +11,19 @@ jobs:
         uses: actions/checkout@v2
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: Remove Mobirise Footer
+        uses: jacobtomlinson/gha-find-replace@2.0.0
+        with:
+          find: "display: flex"
+          replace: "display: none"
+          regex: false
+          include: "index.html"
+      - name: Setup git and commit remove footer
+        run: |
+          git config --global user.name 'matticoli'
+          git config --global user.email 'matticoli@users.noreply.github.com'
+          git commit -am "Remove mobirise footer"
+          git push
       - name: Add MLH Banner
         uses: jacobtomlinson/gha-find-replace@2.0.0
         with:
@@ -18,10 +31,8 @@ jobs:
           replace: <a id="mlh-trust-badge" style="display:block;max-width:100px;min-width:60px;position:fixed;right:50px;top:71px;width:10%;z-index:10000" href="https://mlh.io/seasons/2022/events?utm_source=na-hackathon&utm_medium=TrustBadge&utm_campaign=2022-season&utm_content=white" target="_blank"><img src="https://s3.amazonaws.com/logged-assets/trust-badge/2022/mlh-trust-badge-2022-white.svg" alt="Major League Hacking 2022 Hackathon Season" style="width:100%"></a></body>
           regex: false
           include: "index.html"
-      - name: Commit change
+      - name: Commit add banner
         run: |
-          git config --global user.name 'matticoli'
-          git config --global user.email 'matticoli@users.noreply.github.com'
           git commit -am "Added MLH Banner"
           countbadge=$(cat index.html | grep -o mlh-trust-badge | wc -l)
           if [ $countbadge -lt 3 ]
